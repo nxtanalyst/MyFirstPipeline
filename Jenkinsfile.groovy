@@ -1,12 +1,8 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_BUILDKIT = "1"
-    }
-
     stages {
-        stage('Checkout') {
+        stage('Clone') {
             steps {
                 git 'https://github.com/nxtanalyst/MyFirstPipeline.git'
             }
@@ -20,10 +16,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh '''
-                    docker rm -f my-node-app || true
-                    docker run -d -p 3000:3000 --name my-node-app my-node-app
-                '''
+                sh 'docker run -d -p 3000:3000 --name my-node-app my-node-app'
             }
         }
     }
