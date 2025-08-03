@@ -4,14 +4,16 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+                git branch: 'main',
+                    url: 'https://github.com/nxtanalyst/MyFirstPipeline.git
+'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("myapp")
+                    sh 'docker build -t myapp .'
                 }
             }
         }
@@ -19,12 +21,9 @@ pipeline {
         stage('Clean Old Container') {
             steps {
                 script {
-                    // Stop and remove if exists
                     sh '''
-                        if [ $(docker ps -aq -f name=myapp-container) ]; then
-                            docker stop myapp-container || true
-                            docker rm myapp-container || true
-                        fi
+                        docker stop myapp-container || true
+                        docker rm myapp-container || true
                     '''
                 }
             }
@@ -33,7 +32,6 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    // Run on port 3000
                     sh 'docker run -d -p 3000:3000 --name myapp-container myapp'
                 }
             }
