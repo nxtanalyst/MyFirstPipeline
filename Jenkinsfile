@@ -20,8 +20,16 @@ pipeline {
             steps {
                 script {
                     sh '''
+                        # Stop and remove container named myapp-container
                         docker stop myapp-container || true
                         docker rm myapp-container || true
+
+                        # Kill any container using port 3000
+                        PORT_IN_USE=$(docker ps --format '{{.ID}} {{.Ports}}' | grep ':3000' | awk '{print $1}')
+                        if [ ! -z "$PORT_IN_USE" ]; then
+                            docker stop $PORT_IN_USE || true
+                            docker rm $PORT_IN_USE || true
+                        fi
                     '''
                 }
             }
