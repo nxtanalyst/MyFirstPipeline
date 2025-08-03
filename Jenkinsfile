@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+                git branch: 'main', url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
             }
         }
 
