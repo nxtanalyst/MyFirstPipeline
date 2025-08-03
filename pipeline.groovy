@@ -1,20 +1,15 @@
 pipeline {
-    agent any
-
+    agent {
+        docker {
+            image 'docker:24.0.5'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+        }
+    }
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Building...'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
+                sh 'DOCKER_CONFIG=$PWD/.docker docker build -t my-node-app .'
+                sh 'rm -rf .docker'
             }
         }
     }
