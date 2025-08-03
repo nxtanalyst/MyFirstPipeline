@@ -6,7 +6,7 @@ pipeline {
         }
     }
     environment {
-        HOME = "${env.WORKSPACE}"  // ✅ Override HOME to avoid permission error
+        HOME = "${env.WORKSPACE}"  // ✅ Critical: avoid /.docker write attempt
     }
     stages {
         stage('Checkout') {
