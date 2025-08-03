@@ -2,17 +2,16 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone Repo') {
+        stage('Clone') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+                git 'https://github.com/nxtanalyst/MyFirstPipeline.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t my-node-app .'
+                    dockerImage = docker.build("myapp")
                 }
             }
         }
@@ -20,7 +19,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:3000 my-node-app'
+                    dockerImage.run("-d -p 5000:5000")
                 }
             }
         }
