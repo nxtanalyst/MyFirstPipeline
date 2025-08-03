@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/nxtanalyst/MyFirstPipeline.git', branch: 'main'
+                git branch: 'main', url: 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
             }
         }
 
@@ -16,10 +16,25 @@ pipeline {
             }
         }
 
+        stage('Clean Old Container') {
+            steps {
+                script {
+                    // Stop and remove if exists
+                    sh '''
+                        if [ $(docker ps -aq -f name=myapp-container) ]; then
+                            docker stop myapp-container || true
+                            docker rm myapp-container || true
+                        fi
+                    '''
+                }
+            }
+        }
+
         stage('Run Docker Container') {
             steps {
                 script {
-                    dockerImage.run("-d -p 3000:3000")
+                    // Run on port 3000
+                    sh 'docker run -d -p 3000:3000 --name myapp-container myapp'
                 }
             }
         }
