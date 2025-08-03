@@ -4,7 +4,8 @@ pipeline {
     stages {
         stage('Clone Repo') {
             steps {
-                git 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+                git branch: 'main',
+                    url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
             }
         }
 
