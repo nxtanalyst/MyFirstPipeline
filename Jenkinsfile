@@ -4,14 +4,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+                git url: 'https://github.com/nxtanalyst/MyFirstPipeline.git', branch: 'main'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("my-node-app")
+                    dockerImage = docker.build("myapp")
                 }
             }
         }
