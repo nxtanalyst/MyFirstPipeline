@@ -5,7 +5,6 @@ pipeline {
     steps {
         git branch: 'main', url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
     }
-}
 
 
         stage('Build Docker Image') {
