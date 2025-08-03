@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+                git branch: 'master', url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
             }
         }
 
