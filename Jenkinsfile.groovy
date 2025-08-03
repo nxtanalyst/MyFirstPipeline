@@ -1,13 +1,10 @@
 pipeline {
-    agent {
-        docker {
-            image 'docker:24.0.5'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
+
     environment {
-        HOME = "${env.WORKSPACE}"  // ✅ Critical: avoid /.docker write attempt
+        DOCKER_BUILDKIT = "1"
     }
+
     stages {
         stage('Checkout') {
             steps {
@@ -21,9 +18,12 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name my-node-app my-node-app'
+                sh '''
+                    docker rm -f my-node-app || true
+                    docker run -d -p 3000:3000 --name my-node-app my-node-app
+                '''
             }
         }
     }
