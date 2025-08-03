@@ -1,21 +1,32 @@
 pipeline {
     agent any
 
-    stage('Clone') {
-    steps {
-        git branch: 'main', url: 'https://github.com/nxtanalyst/MyFirstPipeline.git'
+    environment {
+        MY_NAME = "kamal"
     }
 
-
-        stage('Build Docker Image') {
+    stages {
+        stage('Clone') {
             steps {
-                sh 'docker build -t my-node-app .'
+                git 'https://github.com/nxtanalyst/MyFirstPipeline.git'
             }
         }
 
-        stage('Run Docker Container') {
+        stage('Build') {
             steps {
-                sh 'docker run -d -p 3000:3000 --name my-node-app my-node-app'
+                echo "Building code as user ${MY_NAME}"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo "Running tests..."
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo "Deploying application..."
             }
         }
     }
